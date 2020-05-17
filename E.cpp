@@ -29,15 +29,25 @@ typedef pair<int,int> PII;
 const double PI=acos(-1.0);
 const double eps=1e-6;
 const long long mod=1e9+7;
-const int inf=0x7fffffff;
+const int inf=2147483647;
 const int maxn=100005;
 ll qpow(ll x,ll y,ll Mod) {ll ans=1,base=x%Mod; while(y){if(y&1)ans=(ans*base)%Mod;base=(base*base)%Mod;y>>=1;} return ans;}
 ll gcd(ll a,ll b) {return b?gcd(b,a%b):a;}
 
-
+int n;
+ll a[maxn],b[maxn];
 
 int main(){
-	
-
+	scanf("%d",&n);
+	rep(i,1,n){
+		scanf("%lld%lld",&a[i],&b[i]);
+	}
+	sort(a+1,a+1+n,greater<int>());
+	sort(b+1,b+1+n,greater<int>());
+	ll ans=0;
+	rep(i,1,n){
+		ans+=a[i]*b[i];
+	}
+	printf("%lld\n",ans);
 	return 0;
 }

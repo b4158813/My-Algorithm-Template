@@ -1,9 +1,10 @@
 
 /* Normal Segment Tree */
-#define ls i<<1
-#define rs i<<1|1
+
 struct SegmentTree
-{
+{	
+	#define ls i<<1
+	#define rs i<<1|1
 	struct Tree{
 		int l,r;
 		ll sum,ptg;

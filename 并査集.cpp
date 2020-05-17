@@ -1,6 +1,6 @@
 int n,k,ran[maxn],fa[maxn];
 // ran:集合大小
-// fa：父亲
+// fa:父亲
 inline void init(int n){
 	for(int i=1;i<=n;i++){
 		fa[i]=i;
