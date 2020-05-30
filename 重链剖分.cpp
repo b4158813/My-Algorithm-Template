@@ -74,11 +74,11 @@ inline ll getroutesum(int x,int y){
 		if(csdep[cstop[x]]<csdep[cstop[y]])
 			swap(x,y);
 		// Segment Tree: getsum(i,l,r)
-		res+=getsum(1,csid[cstop[x]],csid[x],k);
+		res+=T.getsum(1,csid[cstop[x]],csid[x]);
 		x=csfa[cstop[x]];
 	}
 	if(csdep[x]>csdep[y]) swap(x,y);
-	res+=getsum(1,csid[x],csid[y],k);
+	res+=T.getsum(1,csid[x],csid[y]);
 	return res;
 }
 

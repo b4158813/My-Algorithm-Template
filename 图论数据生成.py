@@ -1,10 +1,10 @@
 from cyaron import *
 
-n = 10
+n = 100005
 
-m = 10
+m = 200000
 
-# graph = Graph.graph(n, m) # 生成一个n点，m边的无向图，边权均为1
+# graph = Graph.graph(n, m, weight_limit=0) # 生成一个n点，m边的无向图，边权均为1
 # graph = Graph.graph(n, m, directed=True, weight_limit=(5, 300)) # 生成一个n点，m边的有向图，边权范围是5到300
 # graph = Graph.graph(n, m, weight_limit=20) # 生成一个n点，m边的无向图，边权范围是1到20
 # graph = Graph.graph(n, m, weight_gen=my_func) # 生成一个n点，m边的无向图，使用自定义随机函数my_func的返回值作为边权
@@ -23,7 +23,7 @@ m = 10
 # # 支持 self_loop, repeated_edges, weight_limit, weight_gen 参数，但不支持 directed，DAG 的 self_loop 默认为 False
 # graph = Graph.DAG(n, m) # 生成一个 n 点，m 边的有向无环图
 # graph = Graph.DAG(n, m, loop=True) # 生成一个 n 点，m 边的有向有环图
-# graph = Graph.UDAG(n, m) # 生成一个 n 点，m 边的无向联通图
+graph = Graph.UDAG(n, m) # 生成一个 n 点，m 边的无向联通图
 
 io = IO('test1.in','test1.out')
 io.input_writeln(binary_tree)
