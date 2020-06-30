@@ -29,8 +29,8 @@ inline ll lcm(ll a,ll b){return a/gcd(a,b)*b;}
 template<class T>
 inline void read(T &x) {
 	x=0;int f=0;char ch=getchar();
-	while(ch<'0'||ch>'9'){f|=(ch=='-');ch=getchar();}
-	while(ch>='0'&&ch<='9'){x=(x<<1)+(x<<3)+(ch^48);ch=getchar();}
+	while(ch<48||ch>57){f|=(ch=='-');ch=getchar();}
+	while(ch>=48&&ch<=57){x=(x<<1)+(x<<3)+(ch^48);ch=getchar();}
 	x=f?-x:x;
 	return;
 }

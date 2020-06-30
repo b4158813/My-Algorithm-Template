@@ -1,4 +1,3 @@
-
 /* Normal Segment Tree */
 
 struct SegmentTree
@@ -11,16 +10,16 @@ struct SegmentTree
 	}tr[maxn<<2];
 
 	inline void push_up(int i){
-		tr[i].sum=(tr[ls].sum+tr[rs].sum)%mod;
+		tr[i].sum=(tr[ls].sum+tr[rs].sum);
 	}
 
 	inline void push_down(int i){
 		if(tr[i].ptg==0) return;
-		ll k=tr[i].ptg%mod;
-		tr[ls].sum=(tr[ls].sum+k*(tr[ls].r-tr[ls].l+1)%mod)%mod;
-		tr[rs].sum=(tr[rs].sum+k*(tr[rs].r-tr[rs].l+1)%mod)%mod;
-		tr[ls].ptg=(tr[ls].ptg+k)%mod;
-		tr[rs].ptg=(tr[rs].ptg+k)%mod;
+		ll k=tr[i].ptg;
+		tr[ls].sum=(tr[ls].sum+k*(tr[ls].r-tr[ls].l+1));
+		tr[rs].sum=(tr[rs].sum+k*(tr[rs].r-tr[rs].l+1));
+		tr[ls].ptg=(tr[ls].ptg+k);
+		tr[rs].ptg=(tr[rs].ptg+k);
 		tr[i].ptg=0;
 	}
 
@@ -28,7 +27,7 @@ struct SegmentTree
 		tr[i].l=l,tr[i].r=r;
 		tr[i].ptg=0;
 		if(tr[i].l==tr[i].r){
-			tr[i].sum=a[l]%mod;
+			tr[i].sum=a[l];
 			return;
 		}
 		int mid=(l+r)>>1;
@@ -39,7 +38,7 @@ struct SegmentTree
 
 	inline void changepoint(int i,int pos,ll k){
 		if(tr[i].l==tr[i].r){
-			tr[i].sum=k%mod;
+			tr[i].sum=k;
 			return;
 		}
 		push_down(i);
@@ -50,8 +49,8 @@ struct SegmentTree
 
 	inline void addinterval(int i,int l,int r,ll k){
 		if(tr[i].l>=l&&tr[i].r<=r){
-			tr[i].sum=(tr[i].sum+k*(tr[i].r-tr[i].l+1)%mod)%mod;
-			tr[i].ptg=(tr[i].ptg+k)%mod;
+			tr[i].sum=(tr[i].sum+k*(tr[i].r-tr[i].l+1));
+			tr[i].ptg=(tr[i].ptg+k);
 			return;
 		}
 		push_down(i);
@@ -65,8 +64,8 @@ struct SegmentTree
 			return tr[i].sum;
 		push_down(i);
 		ll res=0;
-		if(tr[ls].r>=l) res=(res+getsum(ls,l,r))%mod;
-		if(tr[rs].l<=r) res=(res+getsum(rs,l,r))%mod;
+		if(tr[ls].r>=l) res=(res+getsum(ls,l,r));
+		if(tr[rs].l<=r) res=(res+getsum(rs,l,r));
 		return res;
 	}
 }T;
