@@ -18,7 +18,7 @@ inline bool Hungary(int u){
 // 二分图判定
 int colr[maxn];
 inline bool isbg(int u,int col){
-	colr[u]=col;;
+	colr[u]=col;
 	for(int i=head[u];~i;i=e[i].next){
 		int v=e[i].v;
 		if(colr[u]==colr[v]) return false;

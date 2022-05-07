@@ -53,7 +53,7 @@ int main(){
 	#endif
 
 	
-
+	
 
 	#ifdef LOCAL
 	double _used = 1000.0 * double(clock() - _begin) / CLOCKS_PER_SEC - 200.0;

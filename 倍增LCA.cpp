@@ -1,6 +1,10 @@
-int bfa[maxn][21],bdep[maxn];
+/*
+倍增LCA
+*/
+vector<array<int,22>> bfa(n);
+vector<int> deep(n);
 // int bsum[maxn][21],bmax[maxn][21];
-inline void init_beizeng(){
+void init_beizeng(){
 	for(int i=1;i<21;++i){
 		for(int j=1;j<=n;j++){
 			bfa[j][i]=bfa[bfa[j][i-1]][i-1];
@@ -11,30 +15,28 @@ inline void init_beizeng(){
 }
 
 // init dfs
-inline void bdfs(int u,int fath,int depth){
-	bdep[u]=depth;
-	bfa[u][0]=fath;
-	for(int i=head[u];~i;i=e[i].next){
-		int v=e[i].v;
-		if(v!=fath){
-			// bsum[v][0]=e[i].w;
-			// bmax[v][0]=e[i].w;
-			bdfs(v,u,depth+1);
-		}
+void dfs(int u,int fa,int dep){
+	deep[u]=dep;
+	bfa[u][0]=fa;
+	for(int v:e[u]){
+		if(v == fa) continue;
+		// bsum[v][0]=e[i].w;
+		// bmax[v][0]=e[i].w;
+		dfs(v,u,dep+1);
 	}
 }
 
 // LCA
-inline int LCA(int x,int y){
-	if(bdep[x]<bdep[y]) swap(x,y);
+int LCA(int x,int y){
+	if(deep[x]<deep[y]) swap(x,y);
 	// int Sum=0,Max=-1;
-	while(bdep[x]>bdep[y]){
-		// Sum+=bsum[x][int(log2(bdep[x]-bdep[y]))];
-		// Max=max(Max,bmax[x][int(log2(bdep[x]-bdep[y]))]);
-		x=bfa[x][int(log2(bdep[x]-bdep[y]))];
+	while(deep[x]>deep[y]){
+		// Sum+=bsum[x][int(log2(deep[x]-deep[y]))];
+		// Max=max(Max,bmax[x][int(log2(deep[x]-deep[y]))]);
+		x=bfa[x][int(log2(deep[x]-deep[y]))];
 	}
 	if(x==y) return x;
-	for(int i=log2(bdep[x]);i>=0;i--){
+	for(int i=log2(deep[x]);i>=0;i--){
 		if(bfa[x][i]!=bfa[y][i]){
 			x=bfa[x][i],y=bfa[y][i];
 		}
