@@ -6,7 +6,13 @@ using pii = pair<int,int>;
 
 void solve(){
     
-    
+    for(int i=0,j=0;i<n;++i){
+        while(j<i && some quality...){
+            ...
+            j++;
+        }
+        ...
+    }
     
 }
 
