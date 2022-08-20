@@ -17,7 +17,7 @@ inline void init_fac(int N){
 		fac[i] = fac[i-1] * i % mod;
 
     ifac[N] = qpow(fac[N], mod-2, mod);
-    for(int i=N-1;i>=0;i--) 
+    for(int i=N-1;i>=0;i--)
         ifac[i] = ifac[i+1] * (i+1) % mod;
 }
 
