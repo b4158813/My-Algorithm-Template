@@ -37,6 +37,21 @@ template <unsigned M_> struct ModInt {
     friend std::ostream &operator<<(std::ostream &os, const ModInt &a) { return os << a.x; }
 };
 ////////////////////////////////////////////////////////////////////////////////
-using mint = ModInt<1000000007>;
-using mint998 = ModInt<998244353>;
+constexpr int mod = 1e9+7;
+using mint = ModInt<mod>;
 
+constexpr int N = 100005;
+mint ifac[N], fac[N];
+inline void init_fac(int N) {
+    fac[0] = fac[1] = 1;
+    for (int i = 2; i <= N; i++)
+        fac[i] = fac[i - 1] * i;
+
+    ifac[N] = mint(fac[N]).pow(mod-2);
+    for (int i = N - 1; i >= 0; i--)
+        ifac[i] = ifac[i + 1] * (i + 1);
+}
+
+inline mint C(int n, int m) {
+    return (n < m) ? 0 : fac[n] * ifac[m] * ifac[n - m];
+}
