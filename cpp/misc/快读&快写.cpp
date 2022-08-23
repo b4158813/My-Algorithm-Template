@@ -4,11 +4,11 @@ inline char _nc(){
     return L==R&&(R=(L=buf)+fread(buf,1,100000,stdin),L==R)?EOF:*L++;
 }
 template<class T> void read(T &x) {
-	x=0;int f=0;char ch=_nc();
-	while(ch<'0'||ch>'9'){f|=(ch=='-');ch=_nc();}
-	while(ch>='0'&&ch<='9'){x=(x<<1)+(x<<3)+(ch^48);ch=_nc();}
-	x=f?-x:x;
-	return;
+    x=0;int f=0;char ch=_nc();
+    while(ch<'0'||ch>'9'){f|=(ch=='-');ch=_nc();}
+    while(ch>='0'&&ch<='9'){x=(x<<1)+(x<<3)+(ch^48);ch=_nc();}
+    x=f?-x:x;
+    return;
 }
 
 // fast read

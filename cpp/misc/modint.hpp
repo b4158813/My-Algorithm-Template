@@ -40,17 +40,18 @@ template <unsigned M_> struct ModInt {
 constexpr int mod = 1e9+7;
 using mint = ModInt<mod>;
 
-constexpr int N = 100005;
-mint ifac[N], fac[N];
-inline void init_fac(int N) {
-    fac[0] = fac[1] = 1;
-    for (int i = 2; i <= N; i++)
+constexpr int N = 1e5;
+vector<mint> fac(N+5), ifac(N+5);
+int init_fac = []{
+    fac[0] = 1;
+    for (int i = 1; i <= N; i++)
         fac[i] = fac[i - 1] * i;
 
     ifac[N] = mint(fac[N]).pow(mod-2);
     for (int i = N - 1; i >= 0; i--)
         ifac[i] = ifac[i + 1] * (i + 1);
-}
+    return 0;
+}();
 
 inline mint C(int n, int m) {
     return (n < m) ? 0 : fac[n] * ifac[m] * ifac[n - m];
