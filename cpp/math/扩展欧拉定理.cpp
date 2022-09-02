@@ -1,7 +1,13 @@
 ll a,m,b,phim;
 bool flag=false;
 
-// a^b mod m = a^(b mod phi[m] + phi[m]) mod m {if b>=phi[m]}
+/*
+	https://www.luogu.com.cn/problem/P5091
+	扩展欧拉定理
+		通常用于求解快速幂时指数特别巨大的情况（此时，若指数为b，模数为m，则指数需要模phi(m))
+	a^b mod m = a^(b mod phi[m] + phi[m]) mod m {if b>=phi[m]}
+*/
+
 template<class T>
 inline void _read(T &x) {
 	x=0;int f=0;char ch=getchar();
@@ -34,4 +40,4 @@ int main(){
 	ll ans=qpow(a,b+(flag?phim:0),m);
 	printf("%lld\n",ans);
 	return 0;
-}// https://www.luogu.com.cn/problem/P5091
+}

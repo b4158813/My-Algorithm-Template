@@ -11,6 +11,7 @@ inline void init_fac(int N) {
 }
 
 // Lucas定理求组合数，预处理阶乘fac[]
+// 一般用于组合数特别巨大的情况
 inline ll C(ll n, ll m, ll Mod) {
     return (n < m) ? 0 : fac[n] * ifac[m] % mod * ifac[n - m] % mod;
 }

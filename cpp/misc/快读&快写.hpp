@@ -1,4 +1,4 @@
-// fread
+// really fast read
 inline char _nc(){
     static char buf[100000],*L=buf,*R=buf;
     return L==R&&(R=(L=buf)+fread(buf,1,100000,stdin),L==R)?EOF:*L++;

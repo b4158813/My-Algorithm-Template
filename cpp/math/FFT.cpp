@@ -1,3 +1,10 @@
+/*
+	https://www.luogu.com.cn/problem/P3803
+	多项式乘法（快速傅里叶变换）
+	迭代FFT采用蝴蝶操作，复杂度最优
+*/
+
+
 int n,m;
 int bi,rev[maxn];
 complex<double> f[maxn],g[maxn],ans[maxn];

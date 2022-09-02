@@ -1,3 +1,8 @@
+/*
+	https://www.luogu.com.cn/problem/P3812
+	线性基模板题：在一堆数中任选数，使异或和最大
+*/
+
 #include<bits/stdc++.h>
 using namespace std;
 typedef long long ll;

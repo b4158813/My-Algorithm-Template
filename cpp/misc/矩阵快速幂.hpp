@@ -1,5 +1,9 @@
-/* Matrix quick power */
-// (a1, a2, ...) * A = (a2, a3, ...) //
+/*
+    矩阵快速幂
+    (a1, a2, ...) * A = (a2, a3, ...)
+    or
+    A * B^y
+*/
 template <class T>
 struct Matrix {
     vector<vector<T>> mat;

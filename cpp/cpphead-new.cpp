@@ -1,6 +1,6 @@
 #include<bits/stdc++.h>
 using namespace std;
-using ll = int64_t;
+using ll = long long;
 using pii = pair<int,int>;
 
 void solve(){
@@ -11,8 +11,7 @@ void solve(){
 
 int main(){
     
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
+    cin.tie(nullptr)->sync_with_stdio(false);
     
     int _ = 1;
     cin>>_;

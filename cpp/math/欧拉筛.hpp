@@ -1,7 +1,10 @@
-// get phi[1~n]: O(n)
+/*
+    欧拉筛 求 素数(√）、欧拉函数(√)、莫比乌斯函数(todo)
+    time complexity: O(N)
+*/
 constexpr int N = 1e5;
 vector<int> prime, f(N+5), phi(N+5);
-int init_euler = [] {
+static auto init_euler = [] {
     phi[1] = 1;       //欧拉函数：小于等于n的与n互质的正整数个数
     f[0] = f[1] = 1;  // 0：素数，1：合数
     for (int i = 2; i <= N; i++) {
