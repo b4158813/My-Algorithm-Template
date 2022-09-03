@@ -8,6 +8,7 @@ vector<int> KMP(string s){
 		if(s[j]==s[i]) j++;
 		kmp[i] = j;
 	}
+	return kmp;
 }
 
 // KMP algorithm 下标从1开始

@@ -1,6 +1,6 @@
 #include<bits/stdc++.h>
 using namespace std;
-using ll = int64_t;
+using ll = long long;
 using pii = pair<int,int>;
 
 void solve(){
