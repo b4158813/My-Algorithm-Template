@@ -143,7 +143,7 @@ class MCMF {
                 auto &&[v, w, c, r] = e[u][i];
                 if (w > 0 && dis[v] > dis[u] + c) {
                     dis[v] = dis[u] + c;
-                    minflow[v] = min(minflow[v], w);
+                    minflow[v] = min(minflow[u], w);
                     pre[v] = pair(u, i);
                     if(!inq[v]) inq[v]=1, q.push(v);
                 }
