@@ -1,4 +1,5 @@
 
+/* ModInt类 */
 ////////////////////////////////////////////////////////////////////////////////
 template <unsigned M_> struct ModInt {
     static constexpr unsigned M = M_;
@@ -12,6 +13,10 @@ template <unsigned M_> struct ModInt {
     ModInt &operator-=(const ModInt &a) { x = ((x -= a.x) >= M) ? (x + M) : x; return *this; }
     ModInt &operator*=(const ModInt &a) { x = (static_cast<unsigned long long>(x) * a.x) % M; return *this; }
     ModInt &operator/=(const ModInt &a) { return (*this *= a.inv()); }
+    template <class T> ModInt &operator+=(const T &a) { x = ((x += ModInt(a).x) >= M) ? (x - M) : x; return *this; }
+    template <class T> ModInt &operator-=(const T &a) { x = ((x -= ModInt(a).x) >= M) ? (x + M) : x; return *this; }
+    template <class T> ModInt &operator*=(const T &a) { x = (static_cast<unsigned long long>(x) * ModInt(a).x) % M; return *this; }
+    template <class T> ModInt &operator/=(const T &a) { return (*this *= ModInt(a).inv()); }
     ModInt pow(long long e) const { // qpow
         if (e < 0) return inv().pow(-e);
         ModInt a = *this, b = 1U; for (; e; e >>= 1) { if (e & 1) b *= a; a *= a; } return b;
@@ -40,9 +45,13 @@ template <unsigned M_> struct ModInt {
 constexpr int mod = 1e9+7;
 using mint = ModInt<mod>;
 
+
+/*
+    结合ModInt类的 O(N)预处理阶乘逆元 + O(1)求组合数
+*/
 constexpr int N = 1e5;
 vector<mint> fac(N+5), ifac(N+5);
-int init_fac = []{
+static auto init_fac = []{
     fac[0] = 1;
     for (int i = 1; i <= N; i++)
         fac[i] = fac[i - 1] * i;

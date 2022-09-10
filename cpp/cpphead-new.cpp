@@ -11,8 +11,7 @@ void solve(){
 
 int main(){
     
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
+    cin.tie(nullptr)->sync_with_stdio(false);
     
     int _ = 1;
     cin>>_;

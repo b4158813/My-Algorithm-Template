@@ -5,6 +5,7 @@ inline ll exgcd(ll a,ll b,ll &x,ll &y){
 	return res;
 }
 
+
 // x = a[i] (mod b[i]) b[i]互质
 inline void crt(){
 	ll tot=1,ans=0;
