@@ -1,79 +1,67 @@
+/*
+    p5490扫描线 https://www.luogu.com.cn/problem/P5490
+*/
 #include<bits/stdc++.h>
 using namespace std;
-#define rep(i,a,b) for(int i=(a);i<=(b);++i)
-#define ls (i<<1)
-#define rs (i<<1|1)
-#define lld I64d
-typedef long long ll;
-const long long mod=1e9+7;
-const int inf=0x7fffffff;
-const int maxn=1000005;
+using ll = long long;
 
-int n,cnt=0;
-ll disc[maxn<<1];
+class SegTree {
+    #define ls (i<<1)
+    #define rs (i<<1|1)
+public:
+    struct Node {
+        int left, right, cnt, len;
+        Node(): left(0), right(0), cnt(0), len(0) {}
+    };
+    vector<Node> tr;
+    vector<int> X;
+    inline void push_up(int i,int l,int r) {
+		if(tr[i].cnt) tr[i].len = X[r+1] - X[l];
+		else tr[i].len = tr[ls].len + tr[rs].len;
+    }
 
-struct node{
-	ll l,r,h;
-	int k;
-	bool operator<(const node &rhs)const{
-		return h<rhs.h;
-	}
-}line[maxn<<1];
+    SegTree(const int &N): tr(N<<2), X(1) {}
 
-struct segtree{
-	int l,r,sum;
-	ll len;
-}tr[maxn<<2];
-
-void build(int i,int l,int r){
-	tr[i].l = l, tr[i].r = r;
-	tr[i].sum = 0;
-	tr[i].len = 0;
-	if(l==r) return;
-	int mid = (l+r)>>1;
-	build(ls,l,mid);
-	build(rs,mid+1,r);
-	return;
-}
-
-void push_up(int i){
-	if(tr[i].sum) tr[i].len = disc[tr[i].r+1] - disc[tr[i].l];
-	else tr[i].len = tr[ls].len + tr[rs].len;
-}
-
-void edit(int i,int L,int R,int k){
-	if(disc[tr[i].r+1]<=L||disc[tr[i].l]>=R) return;
-	if(disc[tr[i].r+1]<=R&&disc[tr[i].l]>=L){
-		tr[i].sum+=k;
-		push_up(i);
-		return;
-	}
-	if(disc[tr[i].l]<R) edit(ls,L,R,k);
-	if(disc[tr[i].r+1]>L) edit(rs,L,R,k);
-	push_up(i);
-}
+    inline void edit(int i, int l, int r, int L, int R, int k) {
+        if(X[r+1]<=L||X[l]>=R) return;
+		if(X[r+1]<=R&&X[l]>=L){
+			tr[i].cnt += k;
+			push_up(i,l,r);
+			return;
+		}
+		int mid = (l+r)>>1;
+		if(X[l]<R) edit(ls,l,mid,L,R,k);
+		if(X[r+1]>L) edit(rs,mid+1,r,L,R,k);
+		push_up(i,l,r);
+    }
+};
 
 int main(){
-	scanf("%d",&n);
-	for(int i=1;i<=n;++i){
-		ll x1,x2,y1,y2;
-		scanf("%lld%lld%lld%lld",&x1,&y1,&x2,&y2);
-		disc[i*2-1] = x1;
-		disc[i*2] = x2;
-		line[i*2-1] = {x1,x2,y1,1};
-		line[i*2] = {x1,x2,y2,-1};
+	cin.tie(nullptr)->sync_with_stdio(false);
+	int n;
+	cin>>n;
+	set<int> se;
+	vector<tuple<int,int,int,int>> line;
+	for(int i=0;i<n;++i){
+		int xa,xb,ya,yb;
+		cin>>xa>>ya>>xb>>yb;
+		se.insert(xa);
+		se.insert(xb);
+		line.emplace_back(make_tuple(xa,xb,ya,1));
+		line.emplace_back(make_tuple(xa,xb,yb,-1));
 	}
-	n<<=1;
-	sort(line+1,line+1+n);
-	sort(disc+1,disc+1+n);
-	int tot = unique(disc+1,disc+1+n)-disc-1;
-	build(1,1,tot-1);
+	int tot = se.size();
+	SegTree T = SegTree(tot<<1);
+	for(auto &x:se) T.X.emplace_back(x);
+	sort(line.begin(), line.end(), [&](tuple<int,int,int,int> t1, tuple<int,int,int,int> t2){
+		return get<2>(t1) < get<2>(t2);
+	});
 	ll ans = 0;
-	for(int i=1;i<n;++i){
-		edit(1,line[i].l,line[i].r,line[i].k);
-		ans += tr[1].len*(line[i+1].h - line[i].h);
+	for(int i=0;i<n+n-1;++i){
+		T.edit(1,1,tot-1,get<0>(line[i]),get<1>(line[i]),get<3>(line[i]));
+		ans += 1LL * T.tr[1].len * (get<2>(line[i+1]) - get<2>(line[i]));
 	}
-	printf("%lld\n",ans);
+	cout<<ans<<'\n';
 	return 0;
 }
-// p5490扫描线 https://www.luogu.com.cn/problem/P5490
+/////////////////////////////////////////
