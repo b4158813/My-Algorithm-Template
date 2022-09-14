@@ -1,26 +1,54 @@
 /*
-    普通线段树 Segment Tree
-    
-    支持操作：
-        1. 区间加
-        2. 区间求和
-        3. 区间最值（最大 最小）
-        4. 区间查找 <= k 的第一个数的下标（树上二分）
+    线段树 Segment Tree（支持动态开点）
+    支持常规操作：
+        1. 单点修改
+        2. 区间加
+        3. 区间求和
+        4. 区间最值（最大/最小）
+        5. 区间查找 <= k 的第一个数的下标（树上二分）
     
     支持套modint类
+    
+    注意根节点：
+        - 普通线段树：1
+        - 动态开点：0
 */
+
+// #define DYNAMIC // 是否开启动态开点
 template<class T>
 class SegTree {
-    #define ls (i<<1)
-    #define rs (i<<1|1)
+
     const T T_MIN = (std::is_same<T,int>::value ? INT_MIN : LLONG_MIN);
     const T T_MAX = (std::is_same<T,int>::value ? INT_MAX : LLONG_MAX);
+
     struct Node {
         T val, maxh, tg;
-        Node(): val(0), maxh(0), tg(0) {}
+        #ifdef DYNAMIC
+            int ls, rs;
+        #endif
+        Node(): val(0), maxh(0), tg(0) {
+            #ifdef DYNAMIC
+                ls = 0, rs = 0;
+            #endif
+        }
     };
+
+    #ifdef DYNAMIC
+        #define ls (tr[i].ls)
+        #define rs (tr[i].rs)
+        int tcnt; // 动态节点数
+    #else
+        #define ls (i<<1)
+        #define rs (i<<1|1)
+    #endif
+
     vector<Node> tr;
-    inline void push_down(int i, int l, int r) {
+
+    void push_down(int i, int l, int r) {
+        #ifdef DYNAMIC
+            if(!ls) ls = ++tcnt, tr.emplace_back(Node{});
+            if(!rs) rs = ++tcnt, tr.emplace_back(Node{});
+        #endif
         if (!tr[i].tg) return;
         T k = tr[i].tg;
         int mid = (l + r) >> 1;
@@ -32,44 +60,60 @@ class SegTree {
         tr[rs].tg += k;
         tr[i].tg = 0;
     }
-    inline void push_up(int i) {
-        tr[i].val = (tr[ls].val + tr[rs].val);
+    void push_up(int i) {
+        tr[i].val = tr[ls].val + tr[rs].val;
         tr[i].maxh = max(tr[ls].maxh, tr[rs].maxh);
     }
 
 public:
-    SegTree() = default;
+    #ifdef DYNAMIC
+        SegTree(): tcnt(0), tr(1) {}
+    #else
+        SegTree() = default;
+        SegTree(const int &N): tr(N<<2) {}
+        // 初值初始化
+        void build(int i,int l,int r,const vector<int> &a){
+            if(l==r){
+                tr[i].val = tr[i].maxh = a[l];
+                return;
+            }
+            int mid = (l + r) >> 1;
+            build(ls, l, mid, a);
+            build(rs, mid+1, r, a);
+            push_up(i);
+        }
+    #endif
 
-    SegTree(const int &N): tr(N<<2) {}
-
-    // 初值初始化
-    inline void build(int i,int l,int r,const vector<int> &a){
-        if(l==r){
-            tr[i].val = tr[i].maxh = a[l];
+    // 单点修改
+    void change_point(int i, int l, int r, int pos, T k) {
+        if (l == r) {
+            tr[i].val = tr[i].maxh = k;
             return;
         }
+        push_down(i, l, r);
         int mid = (l + r) >> 1;
-        build(ls, l, mid, a);
-        build(rs, mid+1, r, a);
+        if (pos <= mid) change_point(ls, l, mid, pos, k);
+        else change_point(rs, mid+1, r, pos, k);
         push_up(i);
     }
 
     // 区间加
-    inline void update(int i, int l, int r, int L, int R, T k) {
+    void add_range(int i, int l, int r, int L, int R, T k) {
         if (l >= L && r <= R) {
             tr[i].tg += k;
+            tr[i].maxh += k;
             tr[i].val += k * (r - l + 1);
             return;
         }
         push_down(i, l, r);
         int mid = (l + r) >> 1;
-        if (mid >= L) update(ls, l, mid, L, R, k);
-        if (mid+1 <= R) update(rs, mid+1, r, L, R, k);
+        if (mid >= L) add_range(ls, l, mid, L, R, k);
+        if (mid+1 <= R) add_range(rs, mid+1, r, L, R, k);
         push_up(i);
     }
 
     // 区间求max/min
-    inline T getmax(int i, int l, int r, int L, int R){
+    T getmax(int i, int l, int r, int L, int R){
         if(l >= L && r <= R) return tr[i].maxh;
         push_down(i, l, r);
         int mid = (l + r) >> 1;
@@ -80,7 +124,7 @@ public:
     }
 
     // 区间求和
-    inline T getsum(int i, int l, int r, int L, int R) {
+    T getsum(int i, int l, int r, int L, int R) {
         if (l >= L && r <= R) return tr[i].val;
         push_down(i, l, r);
         int mid = (l + r) >> 1;
@@ -91,7 +135,7 @@ public:
     }
     
     // 在[L,R]内查找小于等于k的第一个数的下标（不存在返回-1）
-    inline int getleft_idx(int i, int l, int r, int L, int R, T k){
+    int getleft_idx(int i, int l, int r, int L, int R, T k){
         if(tr[i].maxh < k) return -1;
         if(l == r) return l;
         push_down(i, l, r);
