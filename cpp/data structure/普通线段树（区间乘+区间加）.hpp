@@ -42,7 +42,7 @@ public:
     SegTree(const int &N): tr(N<<2) {}
 
     // 初值初始化
-    inline void build(int i,int l,int r,const vector<int> &a){
+    inline void build(int i,int l,int r,const vector<T> &a){
         if(l==r){
             tr[i].val = a[l];
             return;
