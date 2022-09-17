@@ -1,3 +1,15 @@
+/*
+	珂朵莉树
+
+	重点：在数据随机时复杂度才有效
+
+	用处：用于 包含 给一段区间赋相同值 在内的 区间操作
+	原理：std::set 暴力分块处理
+
+	模板题：https://www.luogu.com.cn/problem/CF896C
+*/
+
+
 #define IT set<odtnode>::iterator
 struct odtnode
 {

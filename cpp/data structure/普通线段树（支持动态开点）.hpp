@@ -1,5 +1,6 @@
 /*
     线段树 Segment Tree（支持动态开点）
+    
     支持常规操作：
         1. 单点修改
         2. 区间加
@@ -7,12 +8,18 @@
         4. 区间最值（最大/最小）
         5. 区间查找 <= k 的第一个数的下标（树上二分）
     
-    支持套modint类
-    
     注意根节点：
         - 普通线段树：1
         - 动态开点：0
+    
+    使用方式：
+        - 非动态开点：
+            SegTree<int> Seg(n);
+            Seg.build(1, 1, n, a); // 建树
+        - 动态开点：
+            开启 #define DYNAMIC
 */
+
 
 // #define DYNAMIC // 是否开启动态开点
 template<class T>
