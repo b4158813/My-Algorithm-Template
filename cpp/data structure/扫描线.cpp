@@ -22,16 +22,17 @@ public:
 
     SegTree(const int &N): tr(N<<2), X(1) {}
 
+	// 注意：tr[i] 对应 [X[l], X[r+1]] 这条线段
     inline void edit(int i, int l, int r, int L, int R, int k) {
-        if(X[r+1]<=L||X[l]>=R) return;
-		if(X[r+1]<=R&&X[l]>=L){
+        if(X[r+1] <= L || X[l] >= R) return;
+		if(X[r+1] <= R && X[l] >= L){
 			tr[i].cnt += k;
 			push_up(i,l,r);
 			return;
 		}
 		int mid = (l+r)>>1;
-		if(X[l]<R) edit(ls,l,mid,L,R,k);
-		if(X[r+1]>L) edit(rs,mid+1,r,L,R,k);
+		edit(ls,l,mid,L,R,k);
+		edit(rs,mid+1,r,L,R,k);
 		push_up(i,l,r);
     }
 };
@@ -53,7 +54,7 @@ int main(){
 	int tot = se.size();
 	SegTree T = SegTree(tot<<1);
 	for(auto &x:se) T.X.emplace_back(x);
-	sort(line.begin(), line.end(), [&](tuple<int,int,int,int> t1, tuple<int,int,int,int> t2){
+	sort(line.begin(), line.end(), [&](tuple<int,int,int,int> &t1, tuple<int,int,int,int> &t2){
 		return get<2>(t1) < get<2>(t2);
 	});
 	ll ans = 0;
@@ -64,4 +65,3 @@ int main(){
 	cout<<ans<<'\n';
 	return 0;
 }
-/////////////////////////////////////////

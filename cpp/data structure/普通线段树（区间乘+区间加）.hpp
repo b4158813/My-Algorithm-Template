@@ -4,6 +4,8 @@
         1. 区间加
         2. 区间乘
         3. 区间求和
+    
+    只需要注意一点：先乘后加
 */
 template<class T>
 class SegTree {

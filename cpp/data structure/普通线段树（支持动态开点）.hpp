@@ -71,8 +71,11 @@ public:
     #else
         SegTree() = default;
         SegTree(const int &N): tr(N<<2) {}
+        void RESIZE(const int &N){
+            tr.resize(N<<2);
+        }
         // 初值初始化
-        void build(int i,int l,int r,const vector<int> &a){
+        void build(int i,int l,int r,const vector<T> &a){
             if(l==r){
                 tr[i].val = tr[i].maxh = a[l];
                 return;
