@@ -7,7 +7,7 @@
     trick:
         1. 边权转点权：
             - 构造时 U = pii
-            - 需要修改csdfs1中的遍历参数 以及 添加 边权转点权操作（用csw维护）
+            - 需要修改csdfs1中的遍历参数 v->[w, v], 以及 添加 边权转点权操作（用csw维护）
             - 对树上route操作时，在最后 x,y 处在同一条重链上时，需要判x,y是否重合
             如果是则不做操作(因为LCA的权值代表其父节点边权)
             否则只处理[csid[x]+1, csid[y]]这个区间
@@ -37,13 +37,15 @@ public:
     // 每个节点对应的dfs序、深度、子树大小、父节点、重儿子、重链顶
     vector<int> csid, csdep, cssize, csfa, csson, cstop;
     
-    // 需要维护的值(以节点为下标)
+    // 需要维护的值(以节点为下标，动态开点不需要)
     vector<T> a;
 
-    // 需要维护的值(以dfs序为下标)
+    // 需要维护的值(以dfs序为下标，动态开点不需要)
     vector<T> csw;
 
-    SegTree<T> Seg;  // 线段树
+    // 线段树(多棵请使用vector包装)
+    // 若动态开点，则自行在外部实现初始化逻辑
+    SegTree<T> Seg;
 
     // 第一次dfs：处理出 深度、父亲、子树大小、重儿子
     void csdfs1(int u, int fath, int depth) {
@@ -68,7 +70,7 @@ public:
     void csdfs2(int u, int topf) {
         csid[u] = ++dfsx;
 
-        /* 需要维护的值 */
+        /* 需要维护的值(动态开点不需要) */
         csw[dfsx] = a[u];
 
         cstop[u] = topf;
@@ -93,6 +95,7 @@ public:
         csfa.resize(n+1);
         csson.resize(n+1);
         cstop.resize(n+1);
+
         a.resize(n+1);
         csw.resize(n+1);
 
