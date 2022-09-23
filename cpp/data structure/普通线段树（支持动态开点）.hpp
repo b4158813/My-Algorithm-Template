@@ -76,11 +76,6 @@ public:
     #ifdef DYNAMIC
         SegTree(): tcnt(0), tr(1) {}
     #else
-        SegTree() = default;
-        SegTree(const int &N): tr(N<<2) {}
-        void RESIZE(const int &N){
-            tr.resize(N<<2);
-        }
         // 初值初始化
         void build(int i,int l,int r,const vector<T> &a){
             if(l==r){
@@ -92,6 +87,11 @@ public:
             build(rs, mid+1, r, a);
             push_up(i);
         }
+
+        void RESIZE(const int &N) { tr.resize(N<<2); }
+        SegTree() = default;
+        SegTree(const int &N): tr(N<<2) {}
+        SegTree(const int &N, const vector<T> &a): tr(N<<2) { build(1, 1, N, a); }
     #endif
 
     // 单点修改
