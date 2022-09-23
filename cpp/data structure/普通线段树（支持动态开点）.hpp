@@ -25,8 +25,8 @@
 template<class T>
 class SegTree {
 
-    const T T_MIN = (std::is_same<T,int>::value ? INT_MIN : LLONG_MIN);
-    const T T_MAX = (std::is_same<T,int>::value ? INT_MAX : LLONG_MAX);
+    static constexpr T T_MIN = (std::is_same<T,int>::value ? INT_MIN : LLONG_MIN);
+    static constexpr T T_MAX = (std::is_same<T,int>::value ? INT_MAX : LLONG_MAX);
 
     struct Node {
         T val, maxh, tg;
