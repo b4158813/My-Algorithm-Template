@@ -67,7 +67,7 @@ class MCMF {
     vector<long long> dis;
     vector<pair<int,int>> pre; // used for EK
     vector<long long> minflow; // used for EK
-    static constexpr long long INF = LLONG_MAX;
+    static constexpr long long INF = numeric_limits<long long>::max();
 
     MCMF(int n): e(n), cur(n), inq(n), vis(n), dis(n), pre(n), minflow(n) {}
 

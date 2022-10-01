@@ -24,9 +24,9 @@
 // #define DYNAMIC // 是否开启动态开点
 template<class T>
 class SegTree {
-
-    static constexpr T T_MIN = (std::is_same<T,int>::value ? INT_MIN : LLONG_MIN);
-    static constexpr T T_MAX = (std::is_same<T,int>::value ? INT_MAX : LLONG_MAX);
+public:
+    static constexpr T T_MIN = numeric_limits<T>::lowest();
+    static constexpr T T_MAX = numeric_limits<T>::max();
 
     struct Node {
         T val, maxh, tg;
