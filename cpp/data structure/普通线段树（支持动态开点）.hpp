@@ -8,16 +8,16 @@
         4. 区间最值（最大/最小）
         5. 区间查找 <= k 的第一个数的下标（树上二分）
     
-    注意根节点：
-        - 普通线段树：1
-        - 动态开点：0
-    
+    根节点：均为 1
     使用方式：
         - 非动态开点：
-            SegTree<int> Seg(n);
-            Seg.build(1, 1, n, a); // 建树
+            SegTree<int> Seg(n); // 开1个普通线段树
+            Seg.build(1, 1, n, a); // 以vector a为初值建树，表示[1,n]区间
         - 动态开点：
             开启 #define DYNAMIC
+            SegTree<int> Seg; // 开一个动态开点线段树
+            SegTree<int> Seg(n); // 开n个动态开点线段树，下标 1 ~ n（用同一个vector<Node>表示，线段树合并时使用）
+            SegTree<int> Seg[n]; // 开n个动态开点线段树（不需要合并时也可以这么用）
 */
 
 
@@ -72,14 +72,33 @@ public:
         tr[i].maxh = max(tr[ls].maxh, tr[rs].maxh);
     }
 
-public:
+
+    /* 构造与初始化 */
     #ifdef DYNAMIC
-        SegTree(): tcnt(0), tr(1) {}
+        SegTree(): tcnt(1), tr(2) {}
+        // 开N棵动态开点线段树，根节点分别为 1 ~ N（用于线段树合并）
+        SegTree(const int &N): tcnt(N), tr(N+1) {}
+
+        // 线段树合并：将b为根的树合并到a为根的树上
+        int merge(int a, int b, int l, int r){
+            if(!a) return b;
+            if(!b) return a;
+            if(l == r){
+                /* 合并信息操作 */
+                return a;
+            }
+            int mid = (l + r) >> 1;
+            tr[a].LS = merge(tr[a].LS, tr[b].LS, l, mid);
+            tr[a].RS = merge(tr[a].RS, tr[b].RS, mid + 1, r);
+            push_up(a);
+            return a;
+        }
     #else
         // 初值初始化
         void build(int i,int l,int r,const vector<T> &a){
             if(l==r){
-                tr[i].val = tr[i].maxh = a[l];
+                tr[i].val = a[l];
+                tr[i].maxh = a[l];
                 return;
             }
             int mid = (l + r) >> 1;
@@ -93,11 +112,14 @@ public:
         SegTree(const int &N): tr(N<<2) {}
         SegTree(const int &N, const vector<T> &a): tr(N<<2) { build(1, 1, N, a); }
     #endif
+    /* 构造与初始化 */
+
 
     // 单点修改
     void change_point(int i, int l, int r, int pos, T k) {
         if (l == r) {
-            tr[i].val = tr[i].maxh = k;
+            tr[i].val = k;
+            tr[i].maxh = k;
             return;
         }
         push_down(i, l, r);
