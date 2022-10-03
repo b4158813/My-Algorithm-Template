@@ -31,18 +31,18 @@ public:
     struct Node {
         T val, maxh, tg;
         #ifdef DYNAMIC
-            int ls, rs;
+            int LS, RS;
         #endif
         Node(): val(0), maxh(0), tg(0) {
             #ifdef DYNAMIC
-                ls = 0, rs = 0;
+                LS = 0, RS = 0;
             #endif
         }
     };
 
     #ifdef DYNAMIC
-        #define ls (tr[i].ls)
-        #define rs (tr[i].rs)
+        #define ls (tr[i].LS)
+        #define rs (tr[i].RS)
         int tcnt; // 动态节点数
     #else
         #define ls (i<<1)
