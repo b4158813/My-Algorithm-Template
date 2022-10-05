@@ -2,22 +2,33 @@
     线段树 Segment Tree（支持动态开点）
     
     支持常规操作：
+
         1. 单点修改
         2. 区间加
         3. 区间求和
         4. 区间最值（最大/最小）
         5. 区间查找 <= k 的第一个数的下标（树上二分）
     
-    根节点：均为 1
+
     使用方式：
-        - 非动态开点：
-            SegTree<int> Seg(n); // 开1个普通线段树
-            Seg.build(1, 1, n, a); // 以vector a为初值建树，表示[1,n]区间
+
+        - 非动态开点：(根节点：1)
+            SegTree<int> seg(n); // 开1个普通线段树
+            SegTree<int> seg(n, a); // 开1个普通线段树，并以vector<T> a为初值建树，维护下标[1,n]区间
+        
         - 动态开点：
             开启 #define DYNAMIC
-            SegTree<int> Seg; // 开一个动态开点线段树
-            SegTree<int> Seg(n); // 开n个动态开点线段树，下标 1 ~ n（用同一个vector<Node>表示，线段树合并时使用）
-            SegTree<int> Seg[n]; // 开n个动态开点线段树（不需要合并时也可以这么用）
+            SegTree<int> seg; // 开1个动态开点线段树（根节点：1）
+            SegTree<int> seg(n); // 开n个动态开点线段树（根节点： 1 ~ n，用同一个vector<Node>表示，线段树合并时使用）
+            SegTree<int> seg[n]; // 开n个动态开点线段树（根节点：1，不需要合并时也可以这么用）
+        
+        - 可持久化（主席树）：
+            int now = 1;
+            SegTree<int> seg(now); // 第1棵树
+            now = seg.update(now, 1, n, L, R, k); // 区间操作，返回这棵树的根节点
+            注意：区间操作需要标记永久化（不能有push_down和push_up，否则损坏可持久化特性）
+            示例见末尾
+
 */
 
 
@@ -107,10 +118,10 @@ public:
             push_up(i);
         }
 
-        void RESIZE(const int &N) { tr.resize(N<<2); }
+        void RESIZE(const int &N) { tr.resize((N+1)<<2); }
         SegTree() = default;
-        SegTree(const int &N): tr(N<<2) {}
-        SegTree(const int &N, const vector<T> &a): tr(N<<2) { build(1, 1, N, a); }
+        SegTree(const int &N): tr((N+1)<<2) {}
+        SegTree(const int &N, const vector<T> &a): SegTree(N) { build(1, 1, N, a); }
     #endif
     /* 构造与初始化 */
 
@@ -185,3 +196,49 @@ public:
 
 };
 ////////////////////////////////////////////////////////
+
+
+
+// 可持久化：区间加（标记永久化）
+int add_range_persist(int i, int l, int r, int L, int R, T k){
+    int new_rt = ++tcnt;
+    tr.emplace_back(Node{});
+    tr[new_rt].LS = tr[i].LS;
+    tr[new_rt].RS = tr[i].RS;
+    tr[new_rt].tg = tr[i].tg;
+    tr[new_rt].val = tr[i].val + k * (min(r,R) - max(l,L) + 1);
+    
+    if(l >= L && r <= R){
+        tr[new_rt].tg += k;
+        return new_rt;
+    }
+
+    int mid = (l + r) >> 1;
+    if(mid >= L) tr[new_rt].LS = add_range_persist(tr[new_rt].LS, l, mid, L, R, k);
+    if(mid+1 <= R) tr[new_rt].RS = add_range_persist(tr[new_rt].RS, mid+1, r, L, R, k);
+    return new_rt;
+}
+
+// 可持久化：获取单点值(标记永久化)
+T get_point_persist(int i, int l, int r, int pos, T persist_tg) {
+    if (l == r) {
+        return tr[i].val + persist_tg;
+    }
+    push_down(i, l, r);
+    int mid = (l + r) >> 1;
+    if (pos <= mid) return get_point_persist(ls, l, mid, pos, persist_tg + tr[i].tg);
+    else return get_point_persist(rs, mid+1, r, pos, persist_tg + tr[i].tg);
+}
+
+// 可持久化：区间求和(标记永久化)
+T getsum_persist(int i, int l, int r, int L, int R, T persist_tg) {
+    if (l >= L && r <= R) {
+        return tr[i].val + persist_tg * (r - l + 1);
+    }
+    push_down(i, l, r);
+    int mid = (l + r) >> 1;
+    T ans = 0;
+    if (pos <= mid) ans += getsum_persist(ls, l, mid, pos, persist_tg + tr[i].tg);
+    else return ans += getsum_persist(rs, mid+1, r, pos, persist_tg + tr[i].tg);
+    return ans;
+}
