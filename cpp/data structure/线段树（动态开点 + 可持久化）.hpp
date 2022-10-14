@@ -7,7 +7,7 @@
         2. 区间加
         3. 区间求和
         4. 区间最值（最大/最小）
-        5. 区间查找 <= k 的第一个数的下标（树上二分）
+        5. 区间查找 >= k 的第一个数的下标（树上二分）
     
 
     使用方式：
@@ -177,7 +177,7 @@ public:
         return ret;
     }
     
-    // 在[L,R]内查找小于等于k的第一个数的下标（不存在返回-1）
+    // 在[L,R]内查找 val >= k 的第一个数的下标（不存在返回-1）
     int getleft_idx(int i, int l, int r, int L, int R, T k){
         if(tr[i].maxh < k) return -1;
         if(l == r) return l;
