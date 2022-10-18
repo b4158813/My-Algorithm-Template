@@ -51,7 +51,7 @@ using mint = ModInt<mod>;
 */
 constexpr int N = 1e5;
 vector<mint> fac(N+5), ifac(N+5);
-static auto init_fac = []{
+int init_fac = []{
     fac[0] = 1;
     for (int i = 1; i <= N; i++)
         fac[i] = fac[i - 1] * i;
@@ -64,4 +64,17 @@ static auto init_fac = []{
 
 inline mint C(int n, int m) {
     return (n < m) ? 0 : fac[n] * ifac[m] * ifac[n - m];
+}
+
+/*
+    自动扩容版求组合数 O(n logn)
+*/
+vector<mint> fac(1,1), ifac(1,1);
+inline mint C(int n, int m) {
+    if(n < m) return 0;
+    while((int)fac.size() < n + 1){
+        fac.emplace_back(fac.back() * (int)fac.size());
+        ifac.emplace_back(1 / fac.back());
+    }
+    return fac[n] * ifac[m] * ifac[n - m];
 }

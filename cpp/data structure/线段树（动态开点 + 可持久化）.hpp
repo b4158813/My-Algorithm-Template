@@ -220,7 +220,7 @@ int add_range_persist(int i, int l, int r, int L, int R, T k){
 }
 
 // 可持久化：获取单点值(标记永久化)
-T get_point_persist(int i, int l, int r, int pos, T persist_tg) {
+T get_point_persist(int i, int l, int r, int pos, T persist_tg = 0) {
     if (l == r) {
         return tr[i].val + persist_tg;
     }
@@ -231,7 +231,7 @@ T get_point_persist(int i, int l, int r, int pos, T persist_tg) {
 }
 
 // 可持久化：区间求和(标记永久化)
-T getsum_persist(int i, int l, int r, int L, int R, T persist_tg) {
+T getsum_persist(int i, int l, int r, int L, int R, T persist_tg = 0) {
     if (l >= L && r <= R) {
         return tr[i].val + persist_tg * (r - l + 1);
     }

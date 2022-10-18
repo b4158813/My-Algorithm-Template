@@ -14,7 +14,7 @@ template <typename A, typename B, typename C, typename D> string to_string(const
 template <typename A> string to_string(const A &v){bool first = true;string res = "[";for (const auto &x : v) {if (!first) res += ",";first = false;res += to_string(x);}res += "]";return res;}
 void debug_out(){std::cerr << endl;}
 template<class T, class... Ts> void debug_out(const T &x, const Ts &...xs){std::cerr << to_string(x) << ' '; debug_out(xs...);}
-
+#define debug(...) std::cerr << "[" << #__VA_ARGS__ << "]: ", debug_out(__VA_ARGS__)
 
 void solve(){
     
