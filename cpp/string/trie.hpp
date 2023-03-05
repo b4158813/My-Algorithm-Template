@@ -45,7 +45,7 @@ struct Trie {
 
     int tot;
     int tr[N][M];
-    bool flag[N];
+    int flag[N];
     int cnt[N]; // 以当前节点字符为前缀的字符串个数
 
     void clear() {
@@ -72,7 +72,7 @@ struct Trie {
     }
 
     int query(string &s) {
-        int rt = 0, res = 0;
+        int rt = 0;
         for(auto &&ch : s) {
             int id = ch - 'a';
             if (!tr[rt][id]) return 0;
