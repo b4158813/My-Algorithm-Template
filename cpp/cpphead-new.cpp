@@ -2,8 +2,8 @@
 using namespace std;
 using ll = long long;
 using ull = unsigned long long;
-using pii = pair<int,int>;
-using tiii = tuple<int,int,int>;
+using pii = std::pair<int,int>;
+using tiii = std::tuple<int,int,int>;
 
 namespace std {
     string to_string(const string& s){return '"'+s+'"';}
@@ -25,10 +25,10 @@ void solve(){
 
 int main(){
     
-    cin.tie(nullptr)->sync_with_stdio(false);
+    std::cin.tie(nullptr)->sync_with_stdio(false);
     
     int _ = 1;
-    cin>>_;
+    std::cin>>_;
     while(_--){
         
         solve();
