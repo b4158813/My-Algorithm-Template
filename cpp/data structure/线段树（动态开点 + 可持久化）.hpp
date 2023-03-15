@@ -106,7 +106,8 @@ public:
         }
     #else
         // 初值初始化
-        void build(int i,int l,int r,const vector<T> &a){
+        template<typename U>
+        void build(int i,int l,int r,const vector<U> &a){
             if(l==r){
                 tr[i].val = a[l];
                 tr[i].maxh = a[l];
@@ -121,7 +122,9 @@ public:
         void RESIZE(const int &N) { tr.resize((N+1)<<2); }
         SegTree() = default;
         SegTree(const int &N): tr((N+1)<<2) {}
-        SegTree(const int &N, const vector<T> &a): SegTree(N) { build(1, 1, N, a); }
+        
+        template<typename U>
+        SegTree(const int &N, const vector<U> &a): SegTree(N) { build(1, 1, N, a); }
     #endif
     /* 构造与初始化 */
 
