@@ -58,8 +58,9 @@ int main() {
     }
     int tot = se.size();
     SegTree T = SegTree(tot << 1);
-    for (auto& x : se)
+    for (auto& x : se){
         T.X.emplace_back(x);
+    }
     sort(line.begin(), line.end(), [&](tuple<int, int, int, int>& t1, tuple<int, int, int, int>& t2) {
         return get<2>(t1) < get<2>(t2);
     });
