@@ -1,6 +1,6 @@
 vector<int> sz(n), center(n);
 int minh = 1e9;
-auto dfs = [&](auto &&self, int u,int fa) -> void{
+auto dfs = [&](auto &&self, int u,int fa) -> void {
     sz[u] = 1;
     center[u] = 0;
     for(auto v:e[u]){

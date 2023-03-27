@@ -39,6 +39,8 @@ public:
 };
 
 
+
+// Trie树
 // 数组版本（记得在堆区创建对象，每次使用前clear()）
 struct Trie {
     static constexpr int N = 1000010, M = 26;
@@ -46,31 +48,29 @@ struct Trie {
     int tot;
     int tr[N][M];
     int flag[N];
-    int cnt[N]; // 以当前节点字符为前缀的字符串个数
-
-    void clear() {
-        for(int i = 0; i <= tot; i++)
-            memset(tr[i], 0, sizeof tr[i]);
-
-        for(int i = 0; i <= tot; i++)
-            flag[i] = cnt[i] = 0;
-
-        tot = 0;
-    }
 
     Trie(): tot(0) {}
 
-    void insert(string &s) { // 插入一个字符串
+    virtual void clear() {
+        for(int i = 0; i <= tot; i++) {
+            memset(tr[i], 0, sizeof tr[i]);
+            flag[i] = 0;
+        }
+        tot = 0;
+    }
+
+    // 插入一个字符串
+    void insert(string &s) {
         int rt = 0;
         for(auto &&ch : s) {
             int id = ch - 'a';
             if(!tr[rt][id]) tr[rt][id] = ++tot;
             rt = tr[rt][id];
-            cnt[rt] ++;
         }
         flag[rt] ++;
     }
 
+    // 查询字符串s在trie树包含的所有模式串中的出现次数
     int query(string &s) {
         int rt = 0;
         for(auto &&ch : s) {
@@ -78,6 +78,6 @@ struct Trie {
             if (!tr[rt][id]) return 0;
             rt = tr[rt][id];
         }
-        return cnt[rt];
+        return flag[rt];
     }
-}trie;
+};

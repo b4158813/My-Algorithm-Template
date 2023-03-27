@@ -14,6 +14,7 @@
 vector<int> low(n), dfn(n), sta;
 vector<bool> vis(n);
 vector<int> color(n);
+vector<vector<int>> groups;
 int deep{0}, scc{0};
 function<void(int)> tarjan = [&](int u) {
     vis[u] = 1;
@@ -30,16 +31,18 @@ function<void(int)> tarjan = [&](int u) {
     if (low[u] == dfn[u]) {
         vis[u] = 0;
         color[u] = scc;
+        vector<int> gr{u};
         while (sta.back() != u) {
+            gr.emplace_back(sta.back());
             color[sta.back()] = scc;
             vis[sta.back()] = 0;
             sta.pop_back();
         }
         sta.pop_back();
         scc++;
+        groups.emplace_back(gr);
     }
 };
-
 
 /*
     Tarjan V-DCC
