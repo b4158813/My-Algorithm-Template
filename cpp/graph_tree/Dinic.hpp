@@ -3,44 +3,45 @@ using namespace std;
 
 class Dinic{
 public:
-
+    // e[u] -> (v, flow, rev)
     vector<vector<tuple<int,int,int>>> e;
-    vector<int> deep,cur;
+    vector<int> deep, cur;
+    static constexpr long long INF = std::numeric_limits<long long>::max();
 
     Dinic(int n): e(n), deep(n), cur(n) {}
 
     void addedge(int u,int v,int w){
-        e[u].emplace_back(make_tuple(v,w,(int)e[v].size()));
-        e[v].emplace_back(make_tuple(u,0,(int)e[u].size()-1));
+        e[u].emplace_back(v, w, (int)e[v].size());
+        e[v].emplace_back(u, 0, (int)e[u].size() - 1);
     }
 
     bool bfs(int s, int t){
-        fill(cur.begin(),cur.end(),0); // 当前弧
-        fill(deep.begin(),deep.end(),-1);
+        fill(cur.begin(), cur.end(), 0); // 当前弧
+        fill(deep.begin(), deep.end(), -1);
         deep[s] = 0;
         queue<int> q;
-        q.push(s);
+        q.emplace(s);
         while(!q.empty()){
             int u = q.front();
             q.pop();
-            for(auto &[v,w,r]:e[u]){
-                if(w>0 && deep[v]==-1){
+            for(auto &[v, w, r]: e[u]){
+                if(w > 0 && deep[v] == -1){
                     deep[v] = deep[u] + 1;
-                    q.push(v);
+                    q.emplace(v);
                 }
             }
         }
-        return deep[t]!=-1;
+        return deep[t] != -1;
     }
 
-    long long dfs(int u, int t, long long flow){
+    long long dfs(int u, int t, long long flow=INF){
         if(u==t) return flow;
         long long left = flow;
         for(int &i=cur[u];i<(int)e[u].size();++i){
-            auto &[v,w,r] = e[u][i];
-            auto &[vv,ww,rr] = e[v][r];
-            if(w>0 && deep[v]==deep[u]+1){
-                long long c = dfs(v,t,min(left,1LL*w));
+            auto &[v, w, r] = e[u][i];
+            auto &[vv, ww, rr] = e[v][r];
+            if(w > 0 && deep[v] == deep[u] + 1){
+                long long c = dfs(v, t, min(left, 1LL * w));
                 w -= c;
                 ww += c;
                 left -= c;
@@ -52,8 +53,8 @@ public:
 
     long long maxflow(int s,int t){
         long long res = 0;
-        while(bfs(s,t)){
-            res += dfs(s,t,LLONG_MAX);
+        while(bfs(s, t)){
+            res += dfs(s, t);
         }
         return res;
     }

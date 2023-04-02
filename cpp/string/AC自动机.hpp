@@ -1,3 +1,11 @@
+/*
+三道模板题：
+https://www.luogu.com.cn/problem/P3808（简单版）
+https://www.luogu.com.cn/problem/P3796（加强版）
+https://www.luogu.com.cn/problem/P5357（二次加强版）
+*/
+
+
 // Trie树
 // 数组版本（记得在堆区创建对象，每次使用前clear()）
 struct Trie {
