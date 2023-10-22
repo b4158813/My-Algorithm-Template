@@ -15,7 +15,7 @@ ll gao(ll x){
         x/=10;
     }
     
-    auto dfs = [&](auto &&self, int pos,int len,bool sta, bool limit, bool lead) -> ll{
+    auto dfs = [&](auto &&self, int pos,int len,bool sta, bool limit, bool lead) -> ll {
         if(pos == -1) return sta;
         if(!limit && !lead && dp[pos][len][sta]!=-1) return dp[pos][len][sta];
         int up = limit ? a[pos] : 9;

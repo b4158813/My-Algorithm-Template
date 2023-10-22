@@ -2,7 +2,7 @@
         倍增LCA
 */
 vector<array<int, 22>> bfa(n + 1);
-// vector<array<int,22>> bsum(n+1), bmax(n+1);
+// vector<array<int,22>> bsum(n + 1), bmax(n + 1);
 vector<int> deep(n + 1);
 auto init_beizeng = [&](int root) {
     // init dfs
@@ -32,18 +32,28 @@ init_beizeng(s);
 
 // LCA
 auto LCA = [&](int x, int y) {
-    if (deep[x] < deep[y]) swap(x, y);
+    if (deep[x] < deep[y]) {
+        swap(x, y);
+    }
     // int Sum = 0, Max = -1;
     while (deep[x] > deep[y]) {
         // Sum += bsum[x][int(log2(deep[x]-deep[y]))];
         // Max = max(Max, bmax[x][int(log2(deep[x]-deep[y]))]);
         x = bfa[x][int(log2(deep[x] - deep[y]))];
     }
-    if (x == y) return x;
+    if (x == y) {
+        // return Sum;
+        // return Max;
+        return x;
+    }
     for (int i = log2(deep[x]); i >= 0; i--) {
         if (bfa[x][i] != bfa[y][i]) {
+            // Sum += bsum[x][i] + bsum[y][i];
+            // Max = max({Max, bmax[x][i], bmax[y][i]});
             x = bfa[x][i], y = bfa[y][i];
         }
     }
+    // return Sum + bsum[x][0] + bsum[y][0];
+    // return max({Max, bmax[x][0], bmax[y][0]});
     return bfa[x][0];
 };

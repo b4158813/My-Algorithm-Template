@@ -1,15 +1,15 @@
 /*
-        Tarjan SCC
-        有向图 强连通分量
-		
-		usage:
-		```
-		for(int i=0;i<n;++i) {
-			if(!dfn[i]) {
-				tarjan(i);
-			}
-		}
-		```
+    Tarjan SCC
+    有向图 强连通分量
+    
+    usage:
+    ```
+    for(int i=0;i<n;++i) {
+        if(!dfn[i]) {
+            tarjan(i);
+        }
+    }
+    ```
 */
 vector<int> low(n), dfn(n), sta;
 vector<bool> vis(n);
